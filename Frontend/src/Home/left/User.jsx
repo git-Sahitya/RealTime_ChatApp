@@ -10,7 +10,7 @@ const User = () => {
         </div>
       </div>
       <div>
-        <h1 className='font-bold'>Sahitya Singh </h1>
+        <h1 className=''>Sahitya Singh </h1>
         <span>sahi@gmail.com</span>
       </div>
     </div>
