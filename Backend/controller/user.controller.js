@@ -1,4 +1,6 @@
 import User from "../models/user.model.js";
+import bcrypt from "bcrypt";
+import createTokenAndSaveCookie from "../jwt/generateToken.js"
 
 export const signup = async (req, res) => {
   try {
@@ -11,18 +13,20 @@ export const signup = async (req, res) => {
     if (user) {
       return res.status(400).json({ message: "email already exist." });
     }
+    // hashing the password
+    const hashPassword = await bcrypt.hash(password, 10);
 
     const newUser = await new User({
       name,
       email,
-      password,
+      password: hashPassword,
     });
 
-    newUser
-      .save()
-      .then(() =>
-        res.status(201).json({ message: "User registered successfully" })
-      );
+    await newUser.save();
+    if (newUser) {
+      createTokenAndSaveCookie(newUser._id,res)
+      res.status(201).json({ message: "User registered successfully" , newUser });
+    }
   } catch (error) {
     console.log(error);
 
