@@ -1,11 +1,44 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    const userInfo = {
+      email: data.email,
+      password: data.password,
+    };
+    axios
+      .post("http://localhost:5002/user/login", userInfo)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data) {
+          alert("Login successfull !!");
+        }
+        localStorage.setItem("messanger", JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        if (error.response) {
+          alert("Error : " + error.response.data.message);
+        }
+      });
+  };
+
   return (
     <>
       <div className="flex h-screen items-center justify-center">
-        <form className="border border-black px-6 py-2 rounded-md space-y-3 w-96">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="border border-black px-6 py-2 rounded-md space-y-3 w-96"
+        >
           <h1 className="text-2xl items-center text-blue-600 font-bold">
             Messenger
           </h1>
@@ -26,9 +59,18 @@ const Login = () => {
               <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
               <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
             </svg>
-            <input type="email" className="grow" placeholder="Email" />
+            <input
+              type="text"
+              className="grow"
+              placeholder="Email"
+              {...register("email", { required: true })}
+            />
           </label>
-
+          {errors.email && (
+            <span className="text-red-500 text-sm font-semibold">
+              This field is required
+            </span>
+          )}
           {/* Password */}
           <label className="input input-bordered flex items-center gap-2">
             <svg
@@ -43,9 +85,18 @@ const Login = () => {
                 clipRule="evenodd"
               />
             </svg>
-            <input type="password" className="grow" placeholder="password" />
+            <input
+              type="password"
+              className="grow"
+              placeholder="password"
+              {...register("password", { required: true })}
+            />
           </label>
-
+          {errors.password && (
+            <span className="text-red-500 text-sm font-semibold">
+              This field is required
+            </span>
+          )}
           {/* Text & Button */}
           <div className="flex justify-center">
             <input

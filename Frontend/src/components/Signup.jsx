@@ -9,8 +9,10 @@ const Signup = () => {
     watch,
     formState: { errors },
   } = useForm();
+  
   const password = watch("password", " ");
   const confirmPassword = watch("confirmpassword", "");
+
   const validatePasswordMatch = (value) => {
     return value === password || "password  don't match";
   };
