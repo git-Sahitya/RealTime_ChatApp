@@ -2,8 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useAuth } from "../context/AuthProvider";
 
 const Login = () => {
+   const [authUser, setAuthUser] = useAuth();
   const {
     register,
     handleSubmit,
@@ -11,12 +13,12 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const userInfo = {
       email: data.email,
       password: data.password,
     };
-    axios
+    await axios
       .post("http://localhost:5002/user/login", userInfo)
       .then((response) => {
         console.log(response.data);
@@ -24,6 +26,8 @@ const Login = () => {
           alert("Login successfull !!");
         }
         localStorage.setItem("messanger", JSON.stringify(response.data));
+        setAuthUser(response.data);
+
       })
       .catch((error) => {
         if (error.response) {
