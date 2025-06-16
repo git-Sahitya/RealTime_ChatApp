@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useAuth } from "../context/AuthProvider";
+import toast from "react-hot-toast";
 
 const Login = () => {
-   const [authUser, setAuthUser] = useAuth();
+  const [authUser, setAuthUser] = useAuth();
   const {
     register,
     handleSubmit,
@@ -23,11 +24,12 @@ const Login = () => {
       .then((response) => {
         console.log(response.data);
         if (response.data) {
-          alert("Login successfull !!");
+          //alert("Login successfull !!");
+
+          toast.success("Login successful");
         }
         localStorage.setItem("messanger", JSON.stringify(response.data));
         setAuthUser(response.data);
-
       })
       .catch((error) => {
         if (error.response) {

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useAuth } from "../context/AuthProvider";
+import toast from "react-hot-toast";
 
 const Signup = () => {
   const [authUser, setAuthUser] = useAuth();
@@ -30,7 +31,7 @@ const Signup = () => {
       .then((response) => {
         console.log(response.data);
         if (response.data) {
-          alert("Signup successfull !!");
+          toast.success("Signup successfully !!")
         }
         localStorage.setItem("messenger", JSON.stringify(response.data));
         setAuthUser(response.data);
