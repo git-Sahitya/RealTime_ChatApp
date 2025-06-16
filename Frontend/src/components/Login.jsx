@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useAuth } from "../context/AuthProvider";
-import toast from "react-hot-toast";
+import toast, { Toaster } from 'react-hot-toast';
 
 const Login = () => {
-  const [authUser, setAuthUser] = useAuth();
+   const [authUser, setAuthUser] = useAuth();
   const {
     register,
     handleSubmit,
@@ -25,11 +25,12 @@ const Login = () => {
         console.log(response.data);
         if (response.data) {
           //alert("Login successfull !!");
-
-          toast.success("Login successful");
+            toast.success("Login successfully");
+            <Toaster position="top-right" reverseOrder={false} />
         }
         localStorage.setItem("messanger", JSON.stringify(response.data));
         setAuthUser(response.data);
+
       })
       .catch((error) => {
         if (error.response) {
