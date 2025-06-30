@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import useConversation from "../../statemanage/useConversation.js";
+import useConversation from "../statemanage/useConversation.js";
 import axios from "axios";
 
 const useGetMessage = () => {
@@ -12,17 +12,18 @@ const useGetMessage = () => {
       if (selectedConversation && selectedConversation._id) {
         try {
           const response = await axios.get(
-            `/api/message/get/${selectedConversation._id}/messages1`
+            `/api/message/get/${selectedConversation._id}`
           );
           setMessages(response.data);
           setLoading(false);
         } catch (error) {
           console.log("Error in useGetMessages:", error);
+           setLoading(false);
         }
       }
     };
     getMessages();
-  }, [selectedConversation.setMessages]);
+  }, [selectedConversation,setMessages]);
   return {
     messages,
     loading,
